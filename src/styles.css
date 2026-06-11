@@ -1,5 +1,21 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface-2: #21262d;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --border: #30363d;
+  --accent: #58a6ff;
+  --accent-contrast: #07111f;
+  --danger: #ff7b72;
+  --success: #56d364;
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
   --bg: #f7f8fb;
   --surface: #ffffff;
   --surface-2: #f1f4f8;
@@ -11,23 +27,10 @@
   --danger: #b42318;
   --success: #027a48;
   --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0d1117;
-    --surface: #161b22;
-    --surface-2: #21262d;
-    --text: #e6edf3;
-    --muted: #8b949e;
-    --border: #30363d;
-    --accent: #58a6ff;
-    --accent-contrast: #07111f;
-    --danger: #ff7b72;
-    --success: #56d364;
-    --shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
-  }
+html[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -35,7 +38,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at top left, rgba(39, 94, 254, 0.10), transparent 30rem), var(--bg);
+  background: radial-gradient(circle at top left, color-mix(in srgb, var(--accent), transparent 88%), transparent 30rem), var(--bg);
   color: var(--text);
 }
 
@@ -46,7 +49,55 @@ button, input, select {
 .page-shell {
   width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 40px 0 64px;
+  padding: 24px 0 28px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.github-link, .theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+.github-link {
+  padding: 8px 13px;
+  text-decoration: none;
+  font-weight: 650;
+}
+
+.github-link:hover, .theme-toggle:hover {
+  border-color: var(--accent);
+}
+
+.github-mark {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.theme-toggle {
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.theme-toggle-icon {
+  width: 18px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1;
 }
 
 .hero {
@@ -58,6 +109,12 @@ button, input, select {
   width: min(560px, 88vw);
   max-height: 140px;
   object-fit: contain;
+}
+
+html[data-theme="dark"] .logo {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 18px;
+  padding: 14px 18px;
 }
 
 .tagline {
@@ -122,7 +179,7 @@ input, select {
   min-height: 42px;
 }
 
-input:focus, select:focus, button:focus-visible {
+input:focus, select:focus, button:focus-visible, a:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--accent), transparent 70%);
   border-color: var(--accent);
 }
@@ -273,8 +330,16 @@ code {
   padding: 1px 5px;
 }
 
+.site-footer {
+  color: var(--muted);
+  font-size: 0.92rem;
+  text-align: center;
+  padding: 22px 0 0;
+}
+
 @media (max-width: 760px) {
   .input-grid { grid-template-columns: 1fr; }
-  .page-shell { width: min(100% - 20px, 1180px); padding-top: 24px; }
+  .page-shell { width: min(100% - 20px, 1180px); padding-top: 14px; }
   .card { padding: 16px; }
+  .topbar { justify-content: center; flex-wrap: wrap; }
 }

@@ -25,6 +25,34 @@ const FALLBACK_ROW_ELEMENTS = ["P", "S", "Cl", "Br", "F", "B", "Si", "Na"];
 
 const $ = (id) => document.getElementById(id);
 
+const THEME_STORAGE_KEY = "formulam-theme";
+
+function applyTheme(theme) {
+  const normalized = theme === "light" ? "light" : "dark";
+  document.documentElement.dataset.theme = normalized;
+  const toggle = $("themeToggle");
+  const label = $("themeToggleText");
+  const icon = document.querySelector(".theme-toggle-icon");
+  if (toggle) {
+    toggle.setAttribute("aria-pressed", String(normalized === "dark"));
+    toggle.setAttribute("aria-label", normalized === "dark" ? "Switch to light mode" : "Switch to dark mode");
+  }
+  if (label) label.textContent = normalized === "dark" ? "Dark" : "Light";
+  if (icon) icon.textContent = normalized === "dark" ? "☾" : "☀";
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+  applyTheme(savedTheme || "dark");
+  $("themeToggle").addEventListener("click", () => {
+    const current = document.documentElement.dataset.theme === "light" ? "light" : "dark";
+    const next = current === "dark" ? "light" : "dark";
+    localStorage.setItem(THEME_STORAGE_KEY, next);
+    applyTheme(next);
+  });
+}
+
+
 function setStatus(text, kind = "") {
   const el = $("status");
   el.textContent = text;
@@ -349,6 +377,7 @@ function downloadCsv() {
 
 async function main() {
   try {
+    initTheme();
     $("ppmHelpButton").addEventListener("click", () => $("ppmHelpDialog").showModal());
     $("addRow").addEventListener("click", addRow);
     $("runSearch").addEventListener("click", runSearch);
