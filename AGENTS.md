@@ -52,6 +52,8 @@ Prefer small regression tests for the changed behavior. Do not weaken assertions
 
 ## Do not
 
+- When adding new dependencies, do not manually edit `package.json` and then run `npm install`. Always add dependencies using `npm install <package>` (or `npm install --save-dev <package>` for dev dependencies) so that the lockfile (for example, `package-lock.json`) is updated by the package manager and to avoid manual synchronization errors.
+
 - Do not commit secrets, tokens, credentials, or private keys.
 - Do not add telemetry or upload user-entered masses/formula ranges without an explicit task.
 - Do not change formula-search semantics without updating tests and documenting the behavior change.
