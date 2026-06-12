@@ -196,7 +196,7 @@
   <TopBar {theme} onToggleTheme={toggleTheme} />
   <Hero />
 
-  <MessageBanner {status} {message} />
+  <!-- <MessageBanner {status} {message} /> -->
 
   <SearchInputs {form} disabled={isBusy} onChange={updateForm} />
 
