@@ -7,7 +7,7 @@
   "scripts": {
     "test": "node tests/smoke-test.mjs",
     "validate:data": "node scripts/check-masses.mjs",
-    "serve": "python3 -m http.server 8000"
+    "serve": "http-server"
   },
   "keywords": [
     "mass-spectrometry",
@@ -15,5 +15,8 @@
     "isotopes",
     "github-pages"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
 }
