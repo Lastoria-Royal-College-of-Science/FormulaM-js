@@ -98,7 +98,9 @@
                 title="Remove row"
                 disabled={disabled || rows.length <= 1}
                 on:click={() => onRemoveRow(row.id)}
-              >-</button>
+              >
+                <span class="i-mdi-minus h-[18px] w-[18px]" aria-hidden="true"></span>
+              </button>
             </td>
           </tr>
         {/each}
@@ -106,6 +108,8 @@
     </table>
   </div>
   <div class="mt-2.5 flex justify-start">
-    <button id="addRow" type="button" class="icon-action" title="Add row" disabled={disabled || !canAddRow} on:click={onAddRow}>+</button>
+    <button id="addRow" type="button" class="icon-action" title="Add row" disabled={disabled || !canAddRow} on:click={onAddRow}>
+      <span class="i-mdi-add h-[18px] w-[18px]" aria-hidden="true"></span>
+    </button>
   </div>
 </section>
