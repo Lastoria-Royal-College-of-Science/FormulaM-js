@@ -20,6 +20,9 @@ import type { FindFormulaRequest, FormulaHit, SearchElements } from "./types";
 
 type ElementBound = number | [number, number] | { min?: number | string; max?: number | string | null } | null | undefined;
 type InternalHit = FormulaHit & { _sort_abs_error: bigint; _sort_mass: bigint };
+// NIST CODATA electron mass in u; FormulaM exact masses are handled in Da, so the numeric value is the same here.
+// Reference: https://physics.nist.gov/cuu/Constants/index.html
+export const ELECTRON_MASS_DA = "0.000548579909065";
 
 function parseBound(bound: ElementBound): [number, number | null] {
   if (bound === null || bound === undefined) return [0, null];
@@ -87,6 +90,7 @@ function buildCandidate({
   targetMzInt,
   charge,
   chargeAbs,
+  electronMassInt,
   scaleDigits,
 }: {
   composition: Record<string, number>;
@@ -94,21 +98,25 @@ function buildCandidate({
   targetMzInt: bigint;
   charge: number;
   chargeAbs: number;
+  electronMassInt: bigint;
   scaleDigits: number;
 }): InternalHit {
   const formula = formatFormula(composition);
-  const neutralDiffInt = massInt - targetMzInt * BigInt(chargeAbs);
+  const chargeBig = BigInt(charge);
+  const chargeAbsBig = BigInt(chargeAbs);
+  const ionMassInt = massInt - chargeBig * electronMassInt;
+  const ionDiffInt = ionMassInt - targetMzInt * chargeAbsBig;
   return {
     formula,
     composition: { ...composition },
     mass: bigIntToDecimalString(massInt, scaleDigits, 9),
-    mz: rationalToDecimalString(massInt, BigInt(chargeAbs) * (10n ** BigInt(scaleDigits)), 9),
-    error_da: rationalToDecimalString(neutralDiffInt, BigInt(chargeAbs) * (10n ** BigInt(scaleDigits)), 9),
-    error_ppm: rationalToDecimalString(neutralDiffInt * 1_000_000n, BigInt(chargeAbs) * targetMzInt, 6),
+    mz: rationalToDecimalString(ionMassInt, chargeAbsBig * (10n ** BigInt(scaleDigits)), 9),
+    error_da: rationalToDecimalString(ionDiffInt, chargeAbsBig * (10n ** BigInt(scaleDigits)), 9),
+    error_ppm: rationalToDecimalString(ionDiffInt * 1_000_000n, chargeAbsBig * targetMzInt, 6),
     charge,
     charge_state: formatChargeState(charge),
     ion_formula: formatIonFormula(formula, charge),
-    _sort_abs_error: absBigInt(neutralDiffInt),
+    _sort_abs_error: absBigInt(ionDiffInt),
     _sort_mass: massInt,
   };
 }
@@ -132,6 +140,8 @@ export function findFormulas({
   const resolvedCharge = parseCharge(charge);
   const chargeAbs = Math.abs(resolvedCharge);
   const chargeAbsBig = BigInt(chargeAbs);
+  const electronMassInt = decimalToScaledBigInt(ELECTRON_MASS_DA, massDigits, "round");
+  const chargeBig = BigInt(resolvedCharge);
 
   const toleranceCandidates: bigint[] = [];
   if (toleranceDa !== null && toleranceDa !== undefined && String(toleranceDa).trim() !== "") {
@@ -145,7 +155,7 @@ export function findFormulas({
   if (!toleranceCandidates.length) throw new Error("provide tolerance_da, tolerance_ppm, or both");
 
   const mzToleranceInt = toleranceCandidates.reduce(maxBigInt, 0n);
-  const neutralTargetInt = targetMzInt * chargeAbsBig;
+  const neutralTargetInt = targetMzInt * chargeAbsBig + chargeBig * electronMassInt;
   const neutralToleranceInt = mzToleranceInt * chargeAbsBig;
   const lowerInt = neutralTargetInt - neutralToleranceInt;
   const upperInt = neutralTargetInt + neutralToleranceInt;
@@ -186,6 +196,7 @@ export function findFormulas({
           targetMzInt,
           charge: resolvedCharge,
           chargeAbs,
+          electronMassInt,
           scaleDigits: massDigits,
         }));
       }

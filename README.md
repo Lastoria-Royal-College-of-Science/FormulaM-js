@@ -11,13 +11,14 @@
 
 ## Overview
 
-This package is a Vite + TypeScript + Svelte refactor of the front-end-only FormulaM app. It keeps the same simplified exact-mass search rule:
+This package is a Vite + TypeScript + Svelte refactor of the front-end-only FormulaM app. It applies a simplified bare-ion exact-mass rule:
 
 ```text
-candidate_mz = candidate_formula_mass / abs(charge)
+ion_mass = candidate_formula_mass - charge * electron_mass
+candidate_mz = ion_mass / abs(charge)
 ```
 
-The input mass is always observed `m/z`. Charge is required and explicit. The sign of the charge is used only for labels such as `+`, `-`, `2+`, and `2-`.
+The input mass is always observed `m/z`. Charge is required and explicit. FormulaM applies only the bare-ion electron-mass correction for charged species such as `[M]+`, `[M]-`, `[M]2+`, and `[M]2-`; it does not add adduct support.
 
 ## Stack
 

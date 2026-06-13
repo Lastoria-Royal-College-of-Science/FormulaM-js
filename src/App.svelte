@@ -50,7 +50,7 @@
   let nextRowId = 0;
   let results: FormulaHit[] = [];
   let form: SearchFormState = {
-    mz: "180.06338810418",
+    mz: "180.062839518",
     charge: "+1",
     toleranceMode: "ppm",
     tolerancePpm: "5",
