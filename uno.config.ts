@@ -10,6 +10,7 @@ const fieldInteraction = `${interactiveBorder} focus:shadow-control-glow focus-v
 
 export default defineConfig({
   presets: [presetUno(), presetIcons()],
+  safelist: ["topbar-shell-scrolled"],
   theme: {
     colors: {
       bg: "var(--bg)",
@@ -35,6 +36,13 @@ export default defineConfig({
   },
   shortcuts: {
     "page-shell": "mx-auto w-full max-w-[1180px] px-4 py-6 pb-7 lt-md:px-2.5 lt-md:pt-3.5",
+    "topbar-shell": "relative sticky top-0 z-40 w-full bg-transparent before:pointer-events-none before:absolute before:bottom-0 before:left-[-2rem] before:right-[-2rem] before:top-[-1.5rem] before:bg-[color:color-mix(in_srgb,var(--surface),transparent_28%)] before:opacity-0 before:transition-opacity before:duration-200 before:ease-out before:backdrop-blur-xl before:backdrop-saturate-150 before:content-[''] after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-[color:color-mix(in_srgb,var(--border),transparent_14%)] after:opacity-0 after:transition-opacity after:duration-200 after:ease-out after:content-['']",
+    "topbar-shell-scrolled": "before:opacity-100 after:opacity-100",
+    "topbar-frame": "relative z-10 mx-auto flex h-[72px] w-full max-w-[1180px] items-center justify-between gap-4 px-4 lt-md:h-[66px] lt-md:gap-[13px] lt-md:px-[13px]",
+    "topbar-brand": "inline-flex h-10 items-center gap-[6px] no-underline text-text transition-colors duration-200 hover:text-accent",
+    "topbar-brand-mark": "h-10 w-10 shrink-0 object-contain",
+    "topbar-brand-copy": "text-[1.125rem] leading-none font-bold tracking-[0.02em] lt-sm:text-[1rem]",
+    "topbar-actions": "flex shrink-0 items-center gap-4 lt-md:gap-[13px]",
     "ui-card": "my-4.5 rounded-2 border border-solid border-border bg-surface p-5.5 shadow-app lt-md:p-4",
     "round-control": `inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-solid border-control-border bg-control-bg p-0 text-text shadow-app ${buttonInteraction}`,
     "field-title": "mb-1.5 block font-[650]",

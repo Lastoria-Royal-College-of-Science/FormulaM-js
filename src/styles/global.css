@@ -54,6 +54,7 @@ html[data-theme="light"] {
 }
 
 html[data-theme="dark"] { color-scheme: dark; }
+html, body { overflow-x: clip; }
 * { box-sizing: border-box; }
 
 body {

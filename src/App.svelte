@@ -474,87 +474,90 @@
   });
 </script>
 
-<main class="page-shell">
+<div id="top" class="min-h-screen">
   <TopBar {theme} onToggleTheme={toggleTheme} />
-  <Hero />
-  <MessageBanner {status} {message} />
 
-  <SpectrumImport
-    activeSheetName={spectrumActiveSheetName}
-    disabled={isBusy}
-    hasHeaderRow={spectrumHasHeaderRow}
-    importSource={spectrumImportSource}
-    intensityColumnIndex={spectrumIntensityColumnIndex}
-    intensityColumnName={spectrumIntensityColumn}
-    peakCount={rawSpectrumPeaks.length}
-    previewTable={spectrumPreview}
-    sourceName={spectrumFileName}
-    mzColumnIndex={spectrumMzColumnIndex}
-    mzColumnName={spectrumMzColumn}
-    importError={spectrumImportError}
-    onApplySelection={handleApplySpectrumSelection}
-    onImportFile={handleSpectrumImport}
-    onSelectHasHeaderRow={handleSpectrumHasHeaderRowSelect}
-    onSelectIntensityColumn={handleSpectrumIntensityColumnSelect}
-    onSelectMzColumn={handleSpectrumMzColumnSelect}
-    onSelectSheet={handleSpectrumSheetSelect}
-  />
+  <main class="page-shell">
+    <Hero />
+    <MessageBanner {status} {message} />
 
-  <SpectrumPlot
-    peaks={spectrumPeaks}
-    settings={plotSettings}
-    {theme}
-    {selectedPeakId}
-    onSelectPeak={handlePeakSelect}
-    onResetView={resetPlotView}
-  />
-
-  {#if rawSpectrumPeaks.length > 0}
-    <PlotSettingsPanel settings={plotSettings} disabled={isBusy} onChange={updatePlotSettings} />
-    <PeakInspector selectedPeak={selectedPeak} assignment={selectedAssignment} onRemoveAssignment={handleRemoveAssignment} />
-  {/if}
-
-  <SearchInputs {form} disabled={isBusy} onChange={updateForm} />
-
-  {#if massIndex}
-    <FormulaSpaceTable
-      {rows}
-      {massIndex}
+    <SpectrumImport
+      activeSheetName={spectrumActiveSheetName}
       disabled={isBusy}
-      onAddRow={addRow}
-      onRemoveRow={removeRow}
-      onUpdateRow={updateRow}
+      hasHeaderRow={spectrumHasHeaderRow}
+      importSource={spectrumImportSource}
+      intensityColumnIndex={spectrumIntensityColumnIndex}
+      intensityColumnName={spectrumIntensityColumn}
+      peakCount={rawSpectrumPeaks.length}
+      previewTable={spectrumPreview}
+      sourceName={spectrumFileName}
+      mzColumnIndex={spectrumMzColumnIndex}
+      mzColumnName={spectrumMzColumn}
+      importError={spectrumImportError}
+      onApplySelection={handleApplySpectrumSelection}
+      onImportFile={handleSpectrumImport}
+      onSelectHasHeaderRow={handleSpectrumHasHeaderRowSelect}
+      onSelectIntensityColumn={handleSpectrumIntensityColumnSelect}
+      onSelectMzColumn={handleSpectrumMzColumnSelect}
+      onSelectSheet={handleSpectrumSheetSelect}
     />
-  {/if}
 
-  <section class="my-4 flex flex-wrap gap-3">
-    <button type="button" class="primary-action" disabled={isBusy || !massIndex} on:click={runSearch}>Find candidate formulas</button>
-    <button id="downloadCsv" type="button" class="secondary-action" disabled={isBusy || results.length === 0} on:click={downloadCsv}>Download formula hits CSV</button>
-  </section>
-
-  {#if hasSearched}
-    <ResultsTable
-      {results}
-      selectedPeakLabel={selectedPeakLabel}
-      selectedPeakHasAssignment={Boolean(selectedAssignment)}
-      onAssign={rawSpectrumPeaks.length > 0 ? handleAssign : null}
+    <SpectrumPlot
+      peaks={spectrumPeaks}
+      settings={plotSettings}
+      {theme}
+      {selectedPeakId}
+      onSelectPeak={handlePeakSelect}
+      onResetView={resetPlotView}
     />
-  {/if}
 
-  {#if rawSpectrumPeaks.length > 0}
-    <ExportPanel
-      includeUnassigned={includeUnassignedInAssignmentCsv}
-      canExportAssignments={canExportAssignmentCsv}
-      disabled={isBusy}
-      totalPeaks={rawSpectrumPeaks.length}
-      {assignedCount}
-      onIncludeUnassignedChange={(value) => (includeUnassignedInAssignmentCsv = value)}
-      onExportAssignments={handleExportAssignments}
-      onExportPng={handleExportPng}
-    />
-  {/if}
+    {#if rawSpectrumPeaks.length > 0}
+      <PlotSettingsPanel settings={plotSettings} disabled={isBusy} onChange={updatePlotSettings} />
+      <PeakInspector selectedPeak={selectedPeak} assignment={selectedAssignment} onRemoveAssignment={handleRemoveAssignment} />
+    {/if}
 
-  <footer class="pt-5.5 text-center text-[0.92rem] text-muted">
-    © 2026 The Regents of the United Colleges, Lastoria Royal College of Science
-  </footer>
-</main>
+    <SearchInputs {form} disabled={isBusy} onChange={updateForm} />
+
+    {#if massIndex}
+      <FormulaSpaceTable
+        {rows}
+        {massIndex}
+        disabled={isBusy}
+        onAddRow={addRow}
+        onRemoveRow={removeRow}
+        onUpdateRow={updateRow}
+      />
+    {/if}
+
+    <section class="my-4 flex flex-wrap gap-3">
+      <button type="button" class="primary-action" disabled={isBusy || !massIndex} on:click={runSearch}>Find candidate formulas</button>
+      <button id="downloadCsv" type="button" class="secondary-action" disabled={isBusy || results.length === 0} on:click={downloadCsv}>Download formula hits CSV</button>
+    </section>
+
+    {#if hasSearched}
+      <ResultsTable
+        {results}
+        selectedPeakLabel={selectedPeakLabel}
+        selectedPeakHasAssignment={Boolean(selectedAssignment)}
+        onAssign={rawSpectrumPeaks.length > 0 ? handleAssign : null}
+      />
+    {/if}
+
+    {#if rawSpectrumPeaks.length > 0}
+      <ExportPanel
+        includeUnassigned={includeUnassignedInAssignmentCsv}
+        canExportAssignments={canExportAssignmentCsv}
+        disabled={isBusy}
+        totalPeaks={rawSpectrumPeaks.length}
+        {assignedCount}
+        onIncludeUnassignedChange={(value) => (includeUnassignedInAssignmentCsv = value)}
+        onExportAssignments={handleExportAssignments}
+        onExportPng={handleExportPng}
+      />
+    {/if}
+
+    <footer class="pt-5.5 text-center text-[0.92rem] text-muted">
+      © 2026 The Regents of the United Colleges, Lastoria Royal College of Science
+    </footer>
+  </main>
+</div>
