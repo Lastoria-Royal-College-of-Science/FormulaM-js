@@ -219,7 +219,7 @@
 
 <main class="page-shell">
   <TopBar {theme} onToggleTheme={toggleTheme} />
-  <Hero />
+  <Hero {theme} />
 
   <!-- <MessageBanner {status} {message} /> -->
 
