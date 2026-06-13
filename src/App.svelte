@@ -6,7 +6,6 @@
   import FormulaSpaceTable from "./components/FormulaSpaceTable.svelte";
   import MessageBanner from "./components/MessageBanner.svelte";
   import ResultsTable from "./components/ResultsTable.svelte";
-  import ExamplesPanel from "./components/ExamplesPanel.svelte";
   import SpectrumImport from "./components/SpectrumImport.svelte";
   import SpectrumPlot from "./components/SpectrumPlot.svelte";
   import PlotSettingsPanel from "./components/PlotSettingsPanel.svelte";
@@ -554,8 +553,6 @@
       onExportPng={handleExportPng}
     />
   {/if}
-
-  <ExamplesPanel />
 
   <footer class="pt-5.5 text-center text-[0.92rem] text-muted">
     © 2026 The Regents of the United Colleges, Lastoria Royal College of Science
